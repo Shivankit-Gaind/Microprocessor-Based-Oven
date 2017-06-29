@@ -1,0 +1,884 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+Test.bin -- emu8086 assembler version: 4.08  
+ 
+[ 26-04-2017  --  10:40:21 ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       
+[   2]        :                                       #make_bin#
+[   3]        :                                       #LOAD_SEGMENT=0500h#    ; setting loading address, .bin file will be loaded to this address:
+[   4]        :                                       #LOAD_OFFSET=0000h#
+[   5]        :                                       sec equ 1010h 		;Stores the total time left for the countdown
+[   6]        :                                       power equ 1012h 		;Stores the number of power presses
+[   7]        :                                       start equ 1013h 		;Stores the number of start button presses
+[   8]        :                                       stop equ 1014h		;Stores the number of stop button presses
+[   9]        :                                       disp equ 1015h 		;Next 4 bytes will be stored for 4-digit BCD count
+[  10]        :                                       display_table equ 1019h 	;Display table for displaying digits on the 7-segement display
+[  11]        :                                       inp equ 1029h			;Stores the input from the port - to check which button is
+[  12]        :                                       time_loop equ 1030h
+[  13]        :                                       
+[  14]        :                                       
+[  15]        :                                       
+[  16]        :                                       #0000=0500h#         ; setting entry point
+[  17]        :                                       
+[  18]        :                                       #DS=1000h#           ; set segment registers
+[  19]        :                                       #ES=1000h#
+[  20]        :                                       
+[  21]        :                                       #SS=1000h#           ; setting stack
+[  22]        :                                       #SP=FFFEh#
+[  23]        :                                       
+[  24]        :                                       #AX=0000h#           ; clearing general registers
+[  25]        :                                       #BX=0000h#
+[  26]        :                                       #CX=0000h#
+[  27]        :                                       #DX=0000h#
+[  28]        :                                       #SI=0000h#
+[  29]        :                                       #DI=0000h#
+[  30]        :                                       #BP=0000h#
+[  31]        :                                       
+[  32]        :                                       
+[  33]    0000: 00 00 00 00 00 00 00 00 00 00 00 00   db 1024 dup(0) ;Initially reserving first 1K of memory for IVT
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00                         
+[  34]        :                                       
+[  35]        :                                       
+[  36]        :                                       ;Storing IP and CS values for different interrupts in the Interrupt Vector Table
+[  37]        :                                       
+[  38]    0400: B8 00 00                              mov ax, 0
+[  39]    0403: 8E C0                                 mov es, ax
+[  40]    0405: B0 30                                 mov al, 30h          ; set general registers
+[  41]    0407: B3 04                                 mov bl, 4h           ; multiply 30h by 4, store result in ax:
+[  42]    0409: F6 E3                                 mul bl
+[  43]    040B: 8B D8                                 mov bx, ax
+[  44]    040D: BE 97 05                              mov si, offset [A10MIN]      ; copy offset into interrupt vector:
+[  45]    0410: 26 89 37                              mov es:[bx], si
+[  46]    0413: 83 C3 02                              add bx, 2
+[  47]    0416: B8 00 00                              mov ax, 0000         ; copy segment into interrupt vector:
+[  48]    0419: 26 89 07                              mov es:[bx], ax
+[  49]        :                                       
+[  50]        :                                       
+[  51]    041C: B8 00 00                              mov ax, 0
+[  52]    041F: 8E C0                                 mov es, ax
+[  53]    0421: B0 31                                 mov al, 31h          ; calculate vector address for interrupt 31h:
+[  54]    0423: B3 04                                 mov bl, 4h           ; multiply 31h by 4, store result in ax:
+[  55]    0425: F6 E3                                 mul bl
+[  56]    0427: 8B D8                                 mov bx, ax
+[  57]    0429: BE C1 05                              mov si, offset [A1MIN]   ; copy offset into interrupt vector:
+[  58]    042C: 26 89 37                              mov es:[bx], si
+[  59]    042F: 83 C3 02                              add bx, 2
+[  60]    0432: B8 00 00                              mov ax, 0000           ; copy segment into interrupt vector:
+[  61]    0435: 26 89 07                              mov es:[bx], ax
+[  62]        :                                       
+[  63]        :                                       
+[  64]    0438: B8 00 00                              mov ax, 0
+[  65]    043B: 8E C0                                 mov es, ax
+[  66]    043D: B0 32                                 mov al, 32h        ; calculate vector address for interrupt 32h:
+[  67]    043F: B3 04                                 mov bl, 4h         ; multiply 32h by 4, store result in ax:
+[  68]    0441: F6 E3                                 mul bl
+[  69]    0443: 8B D8                                 mov bx, ax
+[  70]    0445: BE EE 05                              mov si, offset [A10SEC]    ; copy offset into interrupt vector:
+[  71]    0448: 26 89 37                              mov es:[bx], si
+[  72]    044B: 83 C3 02                              add bx, 2
+[  73]    044E: B8 00 00                              mov ax, 0000         ; copy segment into interrupt vector:
+[  74]    0451: 26 89 07                              mov es:[bx], ax
+[  75]        :                                       
+[  76]        :                                       
+[  77]    0454: B8 00 00                              mov ax, 0
+[  78]    0457: 8E C0                                 mov es, ax
+[  79]    0459: B0 33                                 mov al, 33h          ; calculate vector address for interrupt 33h:
+[  80]    045B: B3 04                                 mov bl, 4h           ; multiply 33h by 4, store result in ax:
+[  81]    045D: F6 E3                                 mul bl
+[  82]    045F: 8B D8                                 mov bx, ax
+[  83]    0461: BE 1B 06                              mov si, offset [POW]    ; copy offset into interrupt vector:
+[  84]    0464: 26 89 37                              mov es:[bx], si
+[  85]    0467: 83 C3 02                              add bx, 2
+[  86]    046A: B8 00 00                              mov ax, 0000        ; copy segment into interrupt vector:
+[  87]    046D: 26 89 07                              mov es:[bx], ax
+[  88]        :                                       
+[  89]        :                                       
+[  90]    0470: B8 00 00                              mov ax, 0
+[  91]    0473: 8E C0                                 mov es, ax
+[  92]    0475: B0 34                                 mov al, 34h       ; calculate vector address for interrupt 34h:
+[  93]    0477: B3 04                                 mov bl, 4h        ; multiply 34h by 4, store result in ax:
+[  94]    0479: F6 E3                                 mul bl
+[  95]    047B: 8B D8                                 mov bx, ax
+[  96]    047D: BE 4C 06                              mov si, offset [STRT]    ; copy offset into interrupt vector:
+[  97]    0480: 26 89 37                              mov es:[bx], si
+[  98]    0483: 83 C3 02                              add bx, 2
+[  99]    0486: B8 00 00                              mov ax, 0000        ; copy segment into interrupt vector:
+[ 100]    0489: 26 89 07                              mov es:[bx], ax
+[ 101]        :                                       
+[ 102]        :                                       
+[ 103]    048C: B8 00 00                              mov ax, 0
+[ 104]    048F: 8E C0                                 mov es, ax
+[ 105]    0491: B0 35                                 mov al, 35h      ; calculate vector address for interrupt 35h:
+[ 106]    0493: B3 04                                 mov bl, 4h       ; multiply 35h by 4, store result in ax:
+[ 107]    0495: F6 E3                                 mul bl
+[ 108]    0497: 8B D8                                 mov bx, ax
+[ 109]    0499: BE 8B 06                              mov si, offset [STP]     ; copy offset into interrupt vector:
+[ 110]    049C: 26 89 37                              mov es:[bx], si
+[ 111]    049F: 83 C3 02                              add bx, 2
+[ 112]    04A2: B8 00 00                              mov ax, 0000      ; copy segment into interrupt vector:
+[ 113]    04A5: 26 89 07                              mov es:[bx], ax
+[ 114]        :                                       
+[ 115]        :                                       
+[ 116]    04A8: B8 00 00                              mov ax, 0
+[ 117]    04AB: 8E C0                                 mov es, ax
+[ 118]    04AD: B0 36                                 mov al, 36h       ; calculate vector address for interrupt 36h:
+[ 119]    04AF: B3 04                                 mov bl, 4h        ; multiply 36h by 4, store result in ax:
+[ 120]    04B1: F6 E3                                 mul bl
+[ 121]    04B3: 8B D8                                 mov bx, ax
+[ 122]    04B5: BE C2 06                              mov si, offset [TIMER]    ; copy offset into interrupt vector:
+[ 123]    04B8: 26 89 37                              mov es:[bx], si
+[ 124]    04BB: 83 C3 02                              add bx, 2
+[ 125]    04BE: B8 00 00                              mov ax, 0000      ; copy segment into interrupt vector:
+[ 126]    04C1: 26 89 07                              mov es:[bx], ax
+[ 127]        :                                       
+[ 128]        :                                       ;IVT SETUP OVER
+[ 129]        :                                       
+[ 130]        :                                       ;Display Table for 7 - segement display
+[ 131]        :                                       
+[ 132]    04C4: BE 19 10                              mov si,display_table
+[ 133]    04C7: C6 04 3F                              mov byte ptr [si],3fh
+[ 134]    04CA: 46                                    inc si
+[ 135]    04CB: C6 04 06                              mov byte ptr [si],06h
+[ 136]    04CE: 46                                    inc si
+[ 137]    04CF: C6 04 5B                              mov byte ptr [si],5bh
+[ 138]    04D2: 46                                    inc si
+[ 139]    04D3: C6 04 4F                              mov byte ptr [si],4fh
+[ 140]    04D6: 46                                    inc si
+[ 141]    04D7: C6 04 66                              mov byte ptr [si],66h
+[ 142]    04DA: 46                                    inc si
+[ 143]    04DB: C6 04 6D                              mov byte ptr [si],6dh
+[ 144]    04DE: 46                                    inc si
+[ 145]    04DF: C6 04 7D                              mov byte ptr [si],7dh
+[ 146]    04E2: 46                                    inc si
+[ 147]    04E3: C6 04 07                              mov byte ptr [si],07h
+[ 148]    04E6: 46                                    inc si
+[ 149]    04E7: C6 04 7F                              mov byte ptr [si],7fh
+[ 150]    04EA: 46                                    inc si
+[ 151]    04EB: C6 04 67                              mov byte ptr [si],67h
+[ 152]    04EE: 46                                    inc si
+[ 153]        :                                       
+[ 154]        :                                       
+[ 155]    04EF: B8 80 00                              mov ax,10000000b	;All ports are input ports
+[ 156]    04F2: BA 06 50                              mov dx,5006h
+[ 157]    04F5: EE                                    out dx,al
+[ 158]    04F6: B8 0A 00                              mov ax,00001010b	;Buzzer Indicator OFF
+[ 159]    04F9: EE                                    out dx,al
+[ 160]    04FA: B8 0C 00                              mov ax,00001100b	;Power input can be taken
+[ 161]    04FD: EE                                    out dx,al
+[ 162]    04FE: B8 09 00                              mov ax,00001001b	;Countdown can't be started
+[ 163]    0501: EE                                    out dx,al
+[ 164]        :                                       
+[ 165]        :                                       ;PC0 - PC3 set 1 -- which means all the 4 seven segement displays are disabled
+[ 166]    0502: B8 01 00                              mov ax,00000001b
+[ 167]    0505: EE                                    out dx,al
+[ 168]    0506: B8 03 00                              mov ax,00000011b	
+[ 169]    0509: EE                                    out dx,al
+[ 170]    050A: B8 05 00                              mov ax,00000101b
+[ 171]    050D: EE                                    out dx,al
+[ 172]    050E: B8 07 00                              mov ax,00000111b
+[ 173]    0511: EE                                    out dx,al
+[ 174]        :                                       
+[ 175]        :                                       
+[ 176]        :                                       ;Initializing 8255(2)
+[ 177]    0512: B8 82 00                              mov ax,10000010b  ;Port B is taken as input
+[ 178]    0515: BA 06 60                              mov dx,6006h
+[ 179]    0518: EE                                    out dx,al
+[ 180]        :                                       
+[ 181]        :                                       ;Initializing the values at the following addresses:
+[ 182]        :                                       
+[ 183]    0519: BE 10 10                              mov si,sec
+[ 184]    051C: C7 04 00 00                           mov word ptr [si],0 ;Total no. of seconds loaded initially
+[ 185]    0520: BE 12 10                              mov si,power
+[ 186]    0523: C6 04 FF                              mov byte ptr [si],-1 ;No. of times Power is pressed
+[ 187]    0526: BE 13 10                              mov si, start
+[ 188]    0529: C6 04 00                              mov byte ptr [si],0 ;No. of times start is pressed
+[ 189]    052C: BE 14 10                              mov si,stop
+[ 190]    052F: C6 04 00                              mov byte ptr [si],00 ;No. of times stop is pressed
+[ 191]        :                                       
+[ 192]        :                                       
+[ 193]        :                                       
+[ 194]    0532: B8 36 00                              mov ax,00110110b 	 ;TIMER2 COUNTER 0 Control Word
+[ 195]    0535: BA 06 30                              mov dx,3006h
+[ 196]    0538: EE                                    out dx,al
+[ 197]        :                                       
+[ 198]    0539: B8 20 00                              mov ax,20h			 ;Loading count into TIMER2 COUNTER 0
+[ 199]    053C: BA 00 30                              mov dx,3000h
+[ 200]    053F: EE                                    out dx,al
+[ 201]    0540: B8 4E 00                              mov ax,4eh
+[ 202]    0543: BA 00 30                              mov dx,3000h
+[ 203]    0546: EE                                    out dx,al
+[ 204]        :                                       
+[ 205]    0547: B8 56 00                              mov ax,01010110b    		 ;TIMER2 COUNTER 1 Control Word
+[ 206]    054A: BA 06 30                              mov dx,3006h
+[ 207]    054D: EE                                    out dx,al
+[ 208]        :                                       
+[ 209]    054E: B8 64 00                              mov ax,100			 ;Loading count into TIMER2 COUNTER 1
+[ 210]    0551: BA 02 30                              mov dx,3002h
+[ 211]    0554: EE                                    out dx,al
+[ 212]        :                                       
+[ 213]        :                                       
+[ 214]    0555: B8 36 00                              mov ax,00110110b		 ;TIMER1 COUNTER 0 Control Word
+[ 215]    0558: BA 06 20                              mov dx,2006h
+[ 216]    055B: EE                                    out dx,al
+[ 217]        :                                       
+[ 218]    055C: B8 20 00                              mov ax,20h			 ;Loading count into TIMER1 COUNTER 0
+[ 219]    055F: BA 00 20                              mov dx,2000h
+[ 220]    0562: EE                                    out dx,al
+[ 221]    0563: B8 4E 00                              mov ax,4Eh
+[ 222]    0566: BA 00 20                              mov dx,2000h
+[ 223]    0569: EE                                    out dx,al
+[ 224]        :                                       
+[ 225]        :                                       
+[ 226]    056A: B8 76 00                              mov ax,01110110b		;TIMER1 COUNTER 1 Control Word
+[ 227]    056D: BA 06 20                              mov dx,2006h
+[ 228]    0570: EE                                    out dx,al
+[ 229]        :                                       
+[ 230]    0571: B8 E8 00                              mov ax,	0E8h		;Loading count into TIMER1 COUNTER 1
+[ 231]    0574: BA 02 20                              mov dx,2002h
+[ 232]    0577: EE                                    out dx,al
+[ 233]    0578: B8 03 00                              mov ax,03h
+[ 234]    057B: BA 02 20                              mov dx,2002h
+[ 235]    057E: EE                                    out dx,al
+[ 236]        :                                       
+[ 237]        :                                       
+[ 238]        :                                       
+[ 239]    057F: B8 92 00                              mov ax,10010010b		;TIMER1 COUNTER 2 Control Word
+[ 240]    0582: BA 06 20                              mov dx,2006h
+[ 241]    0585: EE                                    out dx,al
+[ 242]        :                                       
+[ 243]        :                                       ;Count will be loaded to TIMER1 COUNTER 2 Later
+[ 244]        :                                       
+[ 245]        :                                       
+[ 246]        :                                       
+[ 247]        :                                       
+[ 248]    0586: E8 ED 01                              lp: call poll
+[ 249]    0589: BE 13 10                              mov si,start
+[ 250]    058C: 8A 04                                 mov al,[si]
+[ 251]    058E: 3C 00                                 cmp al,0
+[ 252]    0590: 74 03                                 je n
+[ 253]    0592: E8 4E 01                              call display
+[ 254]    0595: EB EF                                 n: jmp lp
+[ 255]        :                                       
+[ 256]        :                                       
+[ 257]        :                                       
+[ 258]        :                                       
+[ 259]    0597:                                       A10MIN:
+[ 260]        :                                       
+[ 261]    0597: B8 58 02                              mov ax,600 			;Increment the time by 600 seconds i.e 10 minutes
+[ 262]    059A: BE 10 10                              mov si,sec
+[ 263]    059D: 01 04                                 add [si],ax
+[ 264]        :                                       
+[ 265]    059F: BF 30 10                              mov di,time_loop
+[ 266]    05A2: B8 32 00                              mov ax, 50
+[ 267]    05A5: 89 05                                 mov [di],ax
+[ 268]        :                                       
+[ 269]    05A7: BE 13 10                              mov si,start
+[ 270]    05AA: 8A 04                                 mov al,[si]
+[ 271]    05AC: 3C 00                                 cmp al,0
+[ 272]    05AE: 75 0F                                 jne	dontdisplay1
+[ 273]    05B0:                                       timedisplay1:   		;This is executed only if Start button is not even pressed once
+[ 274]    05B0: E8 30 01                              	call display
+[ 275]    05B3: FF 0E 30 10                           	dec word ptr [time_loop]
+[ 276]    05B7: 75 F7                                 jnz timedisplay1
+[ 277]        :                                       
+[ 278]    05B9: B0 00                                 mov al,00h 			;Dispaly Clear
+[ 279]    05BB: BA 00 60                              mov dx,6000h
+[ 280]    05BE: EE                                    out dx,al
+[ 281]        :                                       
+[ 282]    05BF: 90                                    dontdisplay1: nop
+[ 283]    05C0: CF                                    iret
+[ 284]        :                                       
+[ 285]        :                                       
+[ 286]        :                                       
+[ 287]    05C1:                                       A1MIN:
+[ 288]        :                                       
+[ 289]    05C1: B8 3C 00                              mov ax,60 			;Increment the time by 60 seconds i.e 1 minute
+[ 290]    05C4: BE 10 10                              mov si,sec
+[ 291]    05C7: 01 04                                 add [si],ax
+[ 292]    05C9: B9 3C 00                              mov cx, 60
+[ 293]        :                                       
+[ 294]    05CC: BF 30 10                              mov di,time_loop
+[ 295]    05CF: B8 32 00                              mov ax, 50
+[ 296]    05D2: 89 05                                 mov [di],ax
+[ 297]        :                                       
+[ 298]    05D4: BE 13 10                              mov si,start
+[ 299]    05D7: 8A 04                                 mov al,[si]
+[ 300]    05D9: 3C 00                                 cmp al,0
+[ 301]    05DB: 75 0F                                 jne	dontdisplay2
+[ 302]    05DD:                                       timedisplay2:   		;This is executed only if Start button is not even pressed once
+[ 303]    05DD: E8 03 01                              	call display
+[ 304]    05E0: FF 0E 30 10                           	dec word ptr [time_loop]
+[ 305]    05E4: 75 F7                                 jnz timedisplay2
+[ 306]        :                                       
+[ 307]    05E6: B0 00                                 mov al,00h 			;Dispaly Clear
+[ 308]    05E8: BA 00 60                              mov dx,6000h
+[ 309]    05EB: EE                                    out dx,al
+[ 310]        :                                       
+[ 311]    05EC: 90                                    dontdisplay2: nop
+[ 312]    05ED: CF                                    iret
+[ 313]        :                                       
+[ 314]        :                                       
+[ 315]    05EE:                                       A10SEC:
+[ 316]        :                                       
+[ 317]    05EE: B8 0A 00                              mov ax,10 			;Increment the time by 10 seconds
+[ 318]    05F1: BE 10 10                              mov si,sec
+[ 319]    05F4: 01 04                                 add [si],ax
+[ 320]    05F6: B9 3C 00                              mov cx, 60
+[ 321]        :                                       
+[ 322]    05F9: BF 30 10                              mov di,time_loop
+[ 323]    05FC: B8 32 00                              mov ax, 50
+[ 324]    05FF: 89 05                                 mov [di],ax
+[ 325]        :                                       
+[ 326]    0601: BE 13 10                              mov si,start
+[ 327]    0604: 8A 04                                 mov al,[si]
+[ 328]    0606: 3C 00                                 cmp al,0
+[ 329]    0608: 75 0F                                 jne	dontdisplay3
+[ 330]    060A:                                       timedisplay3:  			 ;This is executed only if Start button is not even pressed once
+[ 331]    060A: E8 D6 00                              	call display
+[ 332]    060D: FF 0E 30 10                           	dec word ptr [time_loop]
+[ 333]    0611: 75 F7                                 jnz timedisplay3
+[ 334]        :                                       
+[ 335]    0613: B0 00                                 mov al,00h 			;Dispaly Clear
+[ 336]    0615: BA 00 60                              mov dx,6000h
+[ 337]    0618: EE                                    out dx,al
+[ 338]        :                                       
+[ 339]    0619: 90                                    dontdisplay3: nop
+[ 340]    061A: CF                                    iret
+[ 341]        :                                       
+[ 342]        :                                       
+[ 343]        :                                       
+[ 344]    061B:                                       POW:
+[ 345]    061B: BE 12 10                              mov si,power			 ;Setting up the power
+[ 346]    061E: 8A 04                                 mov al,[si]
+[ 347]    0620: 04 01                                 add al,1
+[ 348]    0622: 3C 03                                 cmp al,03  			;If 4 presses are there, then the power is again set back to 90%
+[ 349]    0624: 75 02                                 jne x2
+[ 350]    0626: B0 00                                 mov al,00
+[ 351]    0628: 88 04                                 x2: mov [si],al
+[ 352]        :                                       
+[ 353]    062A: BF 30 10                              mov di,time_loop
+[ 354]    062D: B8 32 00                              mov ax, 50
+[ 355]    0630: 89 05                                 mov [di],ax
+[ 356]        :                                       
+[ 357]    0632: BE 13 10                              mov si,start
+[ 358]    0635: 8A 04                                 mov al,[si]
+[ 359]    0637: 3C 00                                 cmp al,0
+[ 360]        :                                       
+[ 361]    0639: 75 0F                                 jnz dontdisplay4
+[ 362]        :                                       
+[ 363]    063B:                                       powerdisplay:  		 ;This is executed only if Start button is not even pressed once
+[ 364]    063B: E8 98 01                              	call display_power
+[ 365]    063E: FF 0E 30 10                           	dec word ptr [time_loop]
+[ 366]    0642: 75 F7                                 jnz powerdisplay
+[ 367]        :                                       
+[ 368]    0644: B0 00                                 mov al,00h 			;Dispaly Clear
+[ 369]    0646: BA 00 60                              mov dx,6000h
+[ 370]    0649: EE                                    out dx,al
+[ 371]        :                                       
+[ 372]    064A: 90                                    dontdisplay4: nop
+[ 373]    064B: CF                                    iret
+[ 374]        :                                       
+[ 375]        :                                       
+[ 376]        :                                       
+[ 377]    064C: BE 12 10                              STRT: mov si,power
+[ 378]    064F: 8A 04                                 mov al,[si]
+[ 379]        :                                       
+[ 380]    0651: BF 13 10                              mov di,start
+[ 381]    0654: C6 05 01                              mov byte ptr [di],1
+[ 382]    0657: 32 E4                                 xor ah,ah
+[ 383]        :                                       
+[ 384]        :                                       
+[ 385]    0659: B3 03                                 mov bl, 3
+[ 386]    065B: F6 E3                                 mul bl
+[ 387]    065D: B1 09                                 mov cl,09h
+[ 388]    065F: 2A C8                                 sub cl,al
+[ 389]        :                                       
+[ 390]        :                                       
+[ 391]    0661: BE 10 10                              mov si,sec
+[ 392]    0664: 8B 04                                 mov ax,[si]
+[ 393]        :                                       
+[ 394]    0666: 05 1E 00                              add ax, 30 			;Incrementing counter by 30 seconds everytime Start is pressed
+[ 395]    0669: 89 04                                 mov [si],ax
+[ 396]        :                                       
+[ 397]    066B: BE 14 10                              mov si,stop 			;Number of stops pressed is made equal to zero
+[ 398]    066E: B0 00                                 mov al,0
+[ 399]    0670: 88 04                                 mov byte ptr [si],al
+[ 400]        :                                       
+[ 401]        :                                       
+[ 402]    0672: B8 08 00                              mov ax,00001000b 	;Input fron Timer enabled
+[ 403]    0675: BA 06 50                              mov dx,5006h
+[ 404]    0678: EE                                    out dx,al
+[ 405]    0679: BA 04 20                              mov dx,2004h		;Count loaded into Timer1 Counter 2
+[ 406]    067C: 8B C1                                 mov ax,cx
+[ 407]    067E: EE                                    out dx,al
+[ 408]        :                                       
+[ 409]    067F: B8 0D 00                              mov ax,00001101b 	;Power input can't be taken once start is pressed
+[ 410]    0682: BA 06 50                              mov dx,5006h
+[ 411]    0685: EE                                    out dx,al
+[ 412]    0686: B8 0F 00                              mov ax,00001111b 	;Set up Lock
+[ 413]    0689: EE                                    out dx,al
+[ 414]    068A: CF                                    iret
+[ 415]        :                                       
+[ 416]        :                                       
+[ 417]        :                                       
+[ 418]    068B: B8 09 00                              STP:  mov ax,00001001b 	;Input from Timer blocked
+[ 419]    068E: BA 06 50                              mov dx,5006h
+[ 420]    0691: EE                                    out dx,al
+[ 421]    0692: B8 0C 00                              mov ax,00001100b 		;Power input can be taken
+[ 422]    0695: EE                                    out dx,al
+[ 423]    0696: B8 0A 00                              mov ax,00001010b 		;Buzzer LED Offss
+[ 424]    0699: EE                                    out dx,al
+[ 425]    069A: BE 14 10                              mov si,stop
+[ 426]    069D: FE 04                                 inc byte ptr [si]
+[ 427]    069F: 8A 04                                 mov al,[si]
+[ 428]    06A1: 3C 02                                 cmp al,2 			;If Stop is Pressed twice, then only execute all these steps
+[ 429]    06A3: 7C 15                                 jl x1
+[ 430]    06A5: BF 10 10                              mov di,sec
+[ 431]    06A8: C7 05 00 00                           mov word ptr [di],0
+[ 432]    06AC: C6 04 00                              mov byte ptr [si],0
+[ 433]    06AF: C6 06 13 10 00                        mov byte ptr [start],0
+[ 434]        :                                       
+[ 435]    06B4: B0 00                                 mov al,00h 			;Dispaly Clear
+[ 436]    06B6: BA 00 60                              mov dx,6000h
+[ 437]    06B9: EE                                    out dx,al
+[ 438]        :                                       
+[ 439]    06BA: BA 06 50                              x1: mov dx,5006h
+[ 440]    06BD: B8 0E 00                              mov ax,00001110b		;Opening the lock
+[ 441]    06C0: EE                                    out dx,al
+[ 442]    06C1: CF                                    iret
+[ 443]        :                                       
+[ 444]        :                                       
+[ 445]        :                                       
+[ 446]    06C2: BE 10 10                              TIMER:mov si,sec
+[ 447]    06C5: FF 0C                                 dec word ptr [si] 	;Decrement the count
+[ 448]    06C7: 8B 04                                 mov ax,[si] 		;Check the count
+[ 449]    06C9: 3D 00 00                              cmp ax,0
+[ 450]    06CC: 7F 13                                 jg dontexecute 	;If count is still greater than zero, then no need to execute the given instructions
+[ 451]        :                                       
+[ 452]    06CE: B8 0B 00                              mov ax,00001011b 	;If countdown is over, buzzer is on
+[ 453]    06D1: BA 06 50                              mov dx,5006h
+[ 454]    06D4: EE                                    out dx,al
+[ 455]    06D5: B8 09 00                              mov ax,00001001b 	;No further countdown
+[ 456]    06D8: EE                                    out dx,al
+[ 457]    06D9: B8 0C 00                              mov ax,00001100b 	;Power input enabled
+[ 458]    06DC: EE                                    out dx,al
+[ 459]    06DD: B8 0E 00                              mov ax,00001110b 	;Lock opened
+[ 460]    06E0: EE                                    out dx,al
+[ 461]    06E1: 90                                    dontexecute: nop
+[ 462]    06E2: CF                                    iret
+[ 463]        :                                       
+[ 464]        :                                       
+[ 465]        :                                       
+[ 466]        :                                       
+[ 467]    06E3:                                       proc display near
+[ 468]    06E3: BE 15 10                              mov si,disp
+[ 469]    06E6: BF 10 10                              mov di,sec
+[ 470]    06E9: 8B 05                                 mov ax, [di] 		;Current number of seconds is stored in AX now
+[ 471]        :                                       
+[ 472]    06EB: BB 0A 00                              mov bx,10
+[ 473]        :                                       
+[ 474]    06EE: 33 D2                                 xor dx,dx
+[ 475]    06F0: F7 F3                                 div bx
+[ 476]    06F2: 88 14                                 mov [si],dl 		;Remainder is in DL as remainder is not greater than 9, so no need to consider       			 DH - Hence we extract the last digit
+[ 477]        :                                       
+[ 478]    06F4: 33 D2                                 xor dx,dx   		;Digit at Tens place
+[ 479]    06F6: F7 F3                                 div bx
+[ 480]    06F8: 88 54 01                              mov [si+1],dl
+[ 481]        :                                       
+[ 482]    06FB: 33 D2                                 xor dx,dx		;Digit at hundredth place
+[ 483]    06FD: F7 F3                                 div bx
+[ 484]    06FF: 88 54 02                              mov [si+2],dl
+[ 485]        :                                       
+[ 486]    0702: 33 D2                                 xor dx,dx 		;Digit at Thousandth place
+[ 487]    0704: F7 F3                                 div bx
+[ 488]    0706: 88 54 03                              mov [si+3],dl
+[ 489]        :                                       
+[ 490]        :                                       
+[ 491]    0709: BF 19 10                              mov di,display_table
+[ 492]        :                                       
+[ 493]        :                                       ;Display Last Digit
+[ 494]    070C: 8A 04                                 mov al,[si]
+[ 495]    070E: 8A D8                                 mov bl,al
+[ 496]    0710: 32 FF                                 xor bh,bh
+[ 497]    0712: 8B 01                                 mov ax,[di+bx] 		;So the displacement is equal to the digit we have
+[ 498]    0714: BA 00 60                              mov dx,6000h
+[ 499]    0717: EE                                    out dx,al
+[ 500]        :                                       
+[ 501]    0718: B8 01 00                              mov ax, 00000001b		;Previous display disabled
+[ 502]    071B: BA 06 50                              mov dx,5006h
+[ 503]    071E: EE                                    out dx,al
+[ 504]    071F: B8 06 00                              mov ax, 00000110b 		;Last digit shown
+[ 505]    0722: EE                                    out dx,al
+[ 506]    0723: E8 59 01                              call delay
+[ 507]        :                                       
+[ 508]        :                                       
+[ 509]        :                                       
+[ 510]        :                                       
+[ 511]        :                                       
+[ 512]    0726: 8A 44 01                              mov al,[si+1]
+[ 513]    0729: 8A D8                                 mov bl,al
+[ 514]    072B: 8B 01                                 mov ax,[di+bx]
+[ 515]    072D: BA 00 60                              mov dx,6000h
+[ 516]    0730: EE                                    out dx,al
+[ 517]        :                                       
+[ 518]        :                                       
+[ 519]    0731: B8 07 00                              mov ax, 00000111b		;Previous display disabled
+[ 520]    0734: BA 06 50                              mov dx,5006h
+[ 521]    0737: EE                                    out dx,al
+[ 522]    0738: B8 04 00                              mov ax, 00000100b		;Second Last digit shown
+[ 523]    073B: EE                                    out dx,al
+[ 524]    073C: E8 40 01                              call delay
+[ 525]        :                                       
+[ 526]        :                                       
+[ 527]        :                                       
+[ 528]        :                                       
+[ 529]        :                                       
+[ 530]    073F: 8A 44 02                              mov al,[si+2]
+[ 531]    0742: 8A D8                                 mov bl,al
+[ 532]    0744: 8B 01                                 mov ax,[di+bx]
+[ 533]    0746: BA 00 60                              mov dx,6000h
+[ 534]    0749: EE                                    out dx,al
+[ 535]        :                                       
+[ 536]    074A: B8 05 00                              mov ax, 00000101b 		;Previous display disabled
+[ 537]    074D: BA 06 50                              mov dx,5006h
+[ 538]    0750: EE                                    out dx,al
+[ 539]    0751: B8 02 00                              mov ax, 00000010b		;Digit at Hundredth place shown
+[ 540]    0754: EE                                    out dx,al
+[ 541]    0755: E8 27 01                              call delay
+[ 542]        :                                       
+[ 543]        :                                       
+[ 544]        :                                       
+[ 545]        :                                       
+[ 546]    0758: 8A 44 03                              mov al,[si+3]
+[ 547]    075B: 8A D8                                 mov bl,al
+[ 548]    075D: 8B 01                                 mov ax,[di+bx]
+[ 549]    075F: BA 00 60                              mov dx,6000h
+[ 550]    0762: EE                                    out dx,al
+[ 551]    0763: B8 03 00                              mov ax, 00000011b	;Previous display disabled
+[ 552]    0766: BA 06 50                              mov dx,5006h
+[ 553]    0769: EE                                    out dx,al
+[ 554]    076A: B8 00 00                              mov ax, 00000000b	;Digit at thousandth place shown
+[ 555]    076D: EE                                    out dx,al
+[ 556]    076E: E8 0E 01                              call delay
+[ 557]        :                                       
+[ 558]        :                                       
+[ 559]    0771: B8 01 00                              mov ax, 00000001b 	;Finally clearing the previous display also
+[ 560]    0774: EE                                    out dx,al
+[ 561]    0775: C3                                    ret
+[ 562]        :                                       endp
+[ 563]        :                                       
+[ 564]    0776:                                       poll proc near
+[ 565]    0776: BA 02 60                              mov dx,6002h
+[ 566]    0779: EC                                    in al,dx
+[ 567]        :                                       
+[ 568]        :                                       
+[ 569]        :                                       ;Checking which of the inputs is 1 which means the corresponding switch is pressed
+[ 570]        :                                       
+[ 571]        :                                       ;The mapping to switches is:
+[ 572]        :                                       ; PB0 - 10 MIN BUTTON
+[ 573]        :                                       ; PB1 - 1 MIN BUTTON
+[ 574]        :                                       ; PB2 - 10 SEC BUTTON
+[ 575]        :                                       ; PB3 - POWER BUTTON
+[ 576]        :                                       ; PB4 - START BUTTON
+[ 577]        :                                       ; PB5 - STOP BUTTON
+[ 578]        :                                       ; PB6 - TIMER INTERRUPT HANDLING
+[ 579]        :                                       
+[ 580]        :                                       
+[ 581]        :                                       ;Checking which input is receiving interrupt
+[ 582]        :                                       
+[ 583]    077A: A2 29 10                              mov [inp],al
+[ 584]    077D: 3C FF                                 cmp al,0ffh
+[ 585]    077F: 74 54                                 je pl7
+[ 586]        :                                       
+[ 587]        :                                       
+[ 588]    0781: A0 29 10                              mov al,[inp]
+[ 589]    0784: 24 01                                 and al,01h
+[ 590]    0786: 75 05                                 jnz pl1
+[ 591]    0788: CD 30                                 int 30h
+[ 592]    078A: E8 F9 00                              call delayss
+[ 593]        :                                       
+[ 594]    078D: A0 29 10                              pl1: mov al,[inp]
+[ 595]    0790: 24 02                                 and al,02h
+[ 596]    0792: 75 05                                 jnz pl2
+[ 597]    0794: CD 31                                 int 31h
+[ 598]    0796: E8 ED 00                              call delayss
+[ 599]        :                                       
+[ 600]    0799: A0 29 10                              pl2:mov al,[inp]
+[ 601]    079C: 24 04                                 and al,04h
+[ 602]    079E: 75 05                                 jnz pl3
+[ 603]    07A0: CD 32                                 int 32h
+[ 604]    07A2: E8 E1 00                              call delayss
+[ 605]        :                                       
+[ 606]    07A5: A0 29 10                              pl3:mov al,[inp]
+[ 607]    07A8: 24 08                                 and al,08h
+[ 608]    07AA: 75 05                                 jnz pl4
+[ 609]    07AC: CD 33                                 int 33h
+[ 610]    07AE: E8 D5 00                              call delayss
+[ 611]        :                                       
+[ 612]    07B1: A0 29 10                              pl4:mov al,[inp]
+[ 613]    07B4: 24 10                                 and al,10h
+[ 614]    07B6: 75 05                                 jnz pl5
+[ 615]    07B8: CD 34                                 int 34h
+[ 616]    07BA: E8 C9 00                              call delayss
+[ 617]        :                                       
+[ 618]    07BD: A0 29 10                              pl5:mov al,[inp]
+[ 619]    07C0: 24 20                                 and al,20h
+[ 620]    07C2: 75 05                                 jnz pl6
+[ 621]    07C4: CD 35                                 int 35h
+[ 622]    07C6: E8 BD 00                              call delayss
+[ 623]        :                                       
+[ 624]    07C9: A0 29 10                              pl6:mov al,[inp]
+[ 625]    07CC: 24 40                                 and al,40h
+[ 626]    07CE: 75 05                                 jnz pl7
+[ 627]    07D0: CD 36                                 int 36h
+[ 628]    07D2: E8 B8 00                              call delay1s
+[ 629]        :                                       
+[ 630]    07D5: C3                                    pl7: ret
+[ 631]        :                                       endp
+[ 632]        :                                       
+[ 633]        :                                       ;POLLING ENDS
+[ 634]        :                                       
+[ 635]        :                                       
+[ 636]    07D6:                                       proc display_power near
+[ 637]    07D6: BE 15 10                              mov si,disp
+[ 638]    07D9: BF 12 10                              mov di,power
+[ 639]    07DC: 8A 05                                 mov al,[di]
+[ 640]        :                                       
+[ 641]        :                                       	;Loading Power value according to the number of power presses
+[ 642]    07DE: 3C 00                                 	cmp al,00
+[ 643]    07E0: 75 05                                 	jnz j1
+[ 644]    07E2: B8 5A 00                              	mov ax,90
+[ 645]    07E5: EB 10                                 	jmp j0
+[ 646]        :                                       	
+[ 647]    07E7: 3C 01                                 j1: cmp al,01
+[ 648]    07E9: 75 05                                 	jnz j2
+[ 649]    07EB: B8 3C 00                              	mov ax,60
+[ 650]    07EE: EB 07                                 	jmp j0
+[ 651]        :                                       	
+[ 652]        :                                       
+[ 653]    07F0: 3C 02                                 j2: cmp al,02
+[ 654]    07F2: 75 03                                 	jnz j0
+[ 655]    07F4: B8 1E 00                              	mov ax,30
+[ 656]        :                                       
+[ 657]    07F7: 90                                    j0: nop	
+[ 658]        :                                       
+[ 659]        :                                       
+[ 660]        :                                       
+[ 661]    07F8: BB 0A 00                              mov bx,10
+[ 662]        :                                       
+[ 663]    07FB: 33 D2                                 xor dx,dx
+[ 664]    07FD: F7 F3                                 div bx
+[ 665]    07FF: 88 14                                 mov [si],dl ;Remainder is in DL as remainder is not greater than 9, so no need to consider DH - Hence we extract the last digit
+[ 666]        :                                       
+[ 667]    0801: 33 D2                                 xor dx,dx  	 ;Digit at Tens place
+[ 668]    0803: F7 F3                                 div bx
+[ 669]    0805: 88 54 01                              mov [si+1],dl
+[ 670]        :                                       
+[ 671]    0808: 33 D2                                 xor dx,dx	 ;Digit at hundredth place
+[ 672]    080A: F7 F3                                 div bx
+[ 673]    080C: 88 54 02                              mov [si+2],dl
+[ 674]        :                                       
+[ 675]    080F: 33 D2                                 xor dx,dx 	;Digit at Thousandth place
+[ 676]    0811: F7 F3                                 div bx
+[ 677]    0813: 88 54 03                              mov [si+3],dl
+[ 678]        :                                       
+[ 679]        :                                       
+[ 680]    0816: BF 19 10                              mov di,display_table
+[ 681]        :                                       
+[ 682]        :                                       ;Display Last Digit
+[ 683]    0819: 8A 04                                 mov al,[si]
+[ 684]    081B: 8A D8                                 mov bl,al
+[ 685]    081D: 32 FF                                 xor bh,bh
+[ 686]    081F: 8B 01                                 mov ax,[di+bx]		 ;So the displacement is equal to the digit we have
+[ 687]    0821: BA 00 60                              mov dx,6000h
+[ 688]    0824: EE                                    out dx,al
+[ 689]        :                                       
+[ 690]    0825: B8 01 00                              mov ax, 00000001b	;Previous display disabled
+[ 691]    0828: BA 06 50                              mov dx,5006h
+[ 692]    082B: EE                                    out dx,al
+[ 693]    082C: B8 06 00                              mov ax, 00000110b	 ;Last digit shown
+[ 694]    082F: EE                                    out dx,al
+[ 695]    0830: E8 4C 00                              call delay
+[ 696]        :                                       
+[ 697]        :                                       
+[ 698]        :                                       
+[ 699]        :                                       
+[ 700]        :                                       
+[ 701]    0833: 8A 44 01                              mov al,[si+1]
+[ 702]    0836: 8A D8                                 mov bl,al
+[ 703]    0838: 8B 01                                 mov ax,[di+bx]
+[ 704]    083A: BA 00 60                              mov dx,6000h
+[ 705]    083D: EE                                    out dx,al
+[ 706]        :                                       
+[ 707]        :                                       
+[ 708]    083E: B8 07 00                              mov ax, 00000111b	;Previous display disabled
+[ 709]    0841: BA 06 50                              mov dx,5006h
+[ 710]    0844: EE                                    out dx,al
+[ 711]    0845: B8 04 00                              mov ax, 00000100b	;Second Last digit shown
+[ 712]    0848: EE                                    out dx,al
+[ 713]    0849: E8 33 00                              call delay
+[ 714]        :                                       
+[ 715]        :                                       
+[ 716]        :                                       
+[ 717]        :                                       
+[ 718]        :                                       
+[ 719]    084C: 8A 44 02                              mov al,[si+2]
+[ 720]    084F: 8A D8                                 mov bl,al
+[ 721]    0851: 8B 01                                 mov ax,[di+bx]
+[ 722]    0853: BA 00 60                              mov dx,6000h
+[ 723]    0856: EE                                    out dx,al
+[ 724]        :                                       
+[ 725]    0857: B8 05 00                              mov ax, 00000101b	 ;Previous display disabled
+[ 726]    085A: BA 06 50                              mov dx,5006h
+[ 727]    085D: EE                                    out dx,al
+[ 728]    085E: B8 02 00                              mov ax, 00000010b	;Digit at Hundredth place shown
+[ 729]    0861: EE                                    out dx,al
+[ 730]    0862: E8 1A 00                              call delay
+[ 731]        :                                       
+[ 732]        :                                       
+[ 733]        :                                       
+[ 734]        :                                       
+[ 735]    0865: 8A 44 03                              mov al,[si+3]
+[ 736]    0868: 8A D8                                 mov bl,al
+[ 737]    086A: 8B 01                                 mov ax,[di+bx]
+[ 738]    086C: BA 00 60                              mov dx,6000h
+[ 739]    086F: EE                                    out dx,al
+[ 740]    0870: B8 03 00                              mov ax, 00000011b	;Previous display disabled
+[ 741]    0873: BA 06 50                              mov dx,5006h
+[ 742]    0876: EE                                    out dx,al
+[ 743]    0877: B8 00 00                              mov ax, 00000000b	;Digit at thousandth place shown
+[ 744]    087A: EE                                    out dx,al
+[ 745]    087B: E8 01 00                              call delay
+[ 746]        :                                       
+[ 747]    087E: C3                                    ret
+[ 748]        :                                       endp
+[ 749]        :                                       
+[ 750]        :                                       
+[ 751]        :                                       ;DELAY PROCEDURES
+[ 752]        :                                       
+[ 753]    087F:                                       delay proc near
+[ 754]    087F: B9 D0 07                              mov cx, 2000
+[ 755]    0882: 49                                    l5:    dec cx
+[ 756]    0883: E2 FD                                 loop l5
+[ 757]    0885: C3                                    ret
+[ 758]        :                                       endp
+[ 759]        :                                       
+[ 760]    0886:                                       delayss proc near
+[ 761]    0886: B9 60 EA                              mov cx, 60000
+[ 762]    0889: 49                                    l6:    dec cx
+[ 763]    088A: E2 FD                                 loop l6
+[ 764]    088C: C3                                    ret
+[ 765]        :                                       endp
+[ 766]        :                                       
+[ 767]        :                                       
+[ 768]    088D:                                       delay1s proc near
+[ 769]    088D: B8 04 00                              mov ax, 4
+[ 770]    0890:                                       delay2:
+[ 771]    0890: 48                                    dec ax
+[ 772]    0891: E8 F2 FF                              call delayss
+[ 773]    0894: 3D 00 00                              cmp ax,0
+[ 774]    0897: 75 F7                                 jnz delay2
+[ 775]    0899: C3                                    ret
+[ 776]        :                                       endp
+[ 777]        :                                       
+[ 778]        :                                       
+[ 779]        :                                       
+[ 780]        :                                       
+[ 781]        :                                       
+ 
+===================================================================================================
+ 
+
+
+
+
+===================================================================================================

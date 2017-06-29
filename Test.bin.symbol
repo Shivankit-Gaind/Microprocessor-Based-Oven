@@ -1,0 +1,47 @@
+< THE SYMBOL TABLE >  Test.bin  --  emu8086 assembler version: 4.08 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+LP                       	00586     	-1        	LABEL     	(NOSEG)   
+N                        	00595     	-1        	LABEL     	(NOSEG)   
+A10MIN                   	00597     	-1        	LABEL     	(NOSEG)   
+TIMEDISPLAY1             	005B0     	-1        	LABEL     	(NOSEG)   
+DONTDISPLAY1             	005BF     	-1        	LABEL     	(NOSEG)   
+A1MIN                    	005C1     	-1        	LABEL     	(NOSEG)   
+TIMEDISPLAY2             	005DD     	-1        	LABEL     	(NOSEG)   
+DONTDISPLAY2             	005EC     	-1        	LABEL     	(NOSEG)   
+A10SEC                   	005EE     	-1        	LABEL     	(NOSEG)   
+TIMEDISPLAY3             	0060A     	-1        	LABEL     	(NOSEG)   
+DONTDISPLAY3             	00619     	-1        	LABEL     	(NOSEG)   
+POW                      	0061B     	-1        	LABEL     	(NOSEG)   
+X2                       	00628     	-1        	LABEL     	(NOSEG)   
+POWERDISPLAY             	0063B     	-1        	LABEL     	(NOSEG)   
+DONTDISPLAY4             	0064A     	-1        	LABEL     	(NOSEG)   
+STRT                     	0064C     	-1        	LABEL     	(NOSEG)   
+STP                      	0068B     	-1        	LABEL     	(NOSEG)   
+X1                       	006BA     	-1        	LABEL     	(NOSEG)   
+TIMER                    	006C2     	-1        	LABEL     	(NOSEG)   
+DONTEXECUTE              	006E1     	-1        	LABEL     	(NOSEG)   
+DISPLAY                  	006E3     	-1        	NEAR      	(NOSEG)   
+POLL                     	00776     	-1        	NEAR      	(NOSEG)   
+PL1                      	0078D     	-1        	LABEL     	(NOSEG)   
+PL2                      	00799     	-1        	LABEL     	(NOSEG)   
+PL3                      	007A5     	-1        	LABEL     	(NOSEG)   
+PL4                      	007B1     	-1        	LABEL     	(NOSEG)   
+PL5                      	007BD     	-1        	LABEL     	(NOSEG)   
+PL6                      	007C9     	-1        	LABEL     	(NOSEG)   
+PL7                      	007D5     	-1        	LABEL     	(NOSEG)   
+DISPLAY_POWER            	007D6     	-1        	NEAR      	(NOSEG)   
+J1                       	007E7     	-1        	LABEL     	(NOSEG)   
+J2                       	007F0     	-1        	LABEL     	(NOSEG)   
+J0                       	007F7     	-1        	LABEL     	(NOSEG)   
+DELAY                    	0087F     	-1        	NEAR      	(NOSEG)   
+L5                       	00882     	-1        	LABEL     	(NOSEG)   
+DELAYSS                  	00886     	-1        	NEAR      	(NOSEG)   
+L6                       	00889     	-1        	LABEL     	(NOSEG)   
+DELAY1S                  	0088D     	-1        	NEAR      	(NOSEG)   
+DELAY2                   	00890     	-1        	LABEL     	(NOSEG)   
+===================================================================================================
+[ 26-04-2017  --  10:40:21 ] 
+< END >
+ 
